@@ -1,5 +1,0 @@
-﻿<?xml version="1.0" encoding="UTF-8" ?>
-<resources>
-	<string name="AccordionMvxGroupExpandController">MvvmCross.AdvancedRecyclerView.Utils.AccordionMvxGroupExpandController, MvvmCross.AdvancedRecyclerView</string>
-	<string name="DefaultMvxGroupExpandController">MvvmCross.AdvancedRecyclerView.Utils.DefaultMvxGroupExpandController, MvvmCross.AdvancedRecyclerView</string>
-</resources>
