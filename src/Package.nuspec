@@ -1,0 +1,18 @@
+﻿<?xml version="1.0"?>
+<package>
+    <metadata>
+        <id>x3factr.Platform.Droid.AdvancedRecyclerView</id>
+        <version>0.11.$versionSuffix$</version>
+        <authors>3factr</authors>
+        <owners>3factr</owners>
+        <description>Xamarin.Android bindings for AdvancedRecyclerView</description>
+        <dependencies>
+            <dependency id="Xamarin.Android.Support.v7.AppCompat" version="28.0.0" />
+            <dependency id="Xamarin.Android.Support.v7.RecyclerView" version="28.0.0" />
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="Droid/bin/$configuration$/x3factr.Platform.Droid.AdvancedRecyclerView.dll" target="lib/MonoAndroid81" />
+        <file src="Droid/bin/$configuration$/x3factr.Platform.Droid.AdvancedRecyclerView.xml" target="lib/MonoAndroid81" />
+    </files>
+</package>
