@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0"?>
 <package>
     <metadata>
-        <id>x3factr.Platform.Droid.AdvancedRecyclerView</id>
+        <id>$id$</id>
         <version>0.11.$versionSuffix$</version>
         <authors>3factr</authors>
         <owners>3factr</owners>
@@ -12,7 +12,7 @@
         </dependencies>
     </metadata>
     <files>
-        <file src="Droid/bin/$configuration$/x3factr.Platform.Droid.AdvancedRecyclerView.dll" target="lib/MonoAndroid90" />
-        <file src="Droid/bin/$configuration$/x3factr.Platform.Droid.AdvancedRecyclerView.xml" target="lib/MonoAndroid90" />
+        <file src="Droid/bin/$configuration$/$id$.dll" target="lib/MonoAndroid90" />
+        <file src="Droid/bin/$configuration$/$id$.xml" target="lib/MonoAndroid90" />
     </files>
 </package>

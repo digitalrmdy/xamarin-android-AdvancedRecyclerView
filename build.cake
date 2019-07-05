@@ -31,6 +31,8 @@ var gitCommitSha = gitCommitInfo.Sha;
 var gitCommitMessage = gitCommitInfo.Message;
 var gitcommitAuthor = gitCommitInfo.Author.Name;
 
+var customName = Argument("customName", EnvironmentVariable("CUSTOM_NAME") ?? projectName);
+
 var betaSuffix = gitBranch != "master" ? "-beta" : string.Empty;
 
 Action<string> LogToSlack = logText => 
@@ -123,8 +125,8 @@ Task("SetMetadata")
       var assemblyInfo = ParseAssemblyInfo(File(file));
       CreateAssemblyInfo(file, new AssemblyInfoSettings
       {
-        Title = assemblyInfo.Title,
-        Product = assemblyInfo.Title,
+        Title = customName,
+        Product = customName,
         Company = company,
         Version = fileVersion,
         FileVersion = fileVersion,
@@ -132,6 +134,8 @@ Task("SetMetadata")
         Copyright = string.Format("Copyright (c) {0}, {1}", DateTime.Now.Year, company)
       });
     }
+
+    ReplaceTextInFiles("**/*.cs", projectName, customName);
   }
   catch(System.Exception exc)
   {
@@ -149,13 +153,16 @@ Task("BuildSolution")
         {
             Information("Building solution");
             MSBuild(solutionPath, conf =>
-            { conf
-                .SetConfiguration(buildConfig);
-
+            { 
+                conf = conf.SetConfiguration(buildConfig);
+                
                 if(minimalVerbosity)
                 {
-                    conf.SetVerbosity(Verbosity.Minimal);
+                    conf = conf.SetVerbosity(Verbosity.Minimal);
                 }
+
+                conf = conf.WithProperty("RootNamespace", customName);
+                conf = conf.WithProperty("AssemblyName", customName);
             });
 
             DeleteFiles("./*.nupkg");
@@ -176,6 +183,7 @@ Task("CreateNuGetPackage")
             var properties = new Dictionary<string,string>();
             properties.Add("VersionSuffix", $"{buildId}{betaSuffix}");
             properties.Add("Configuration", buildConfig);
+            properties.Add("Id", customName);
 
             var nuGetPackSettings = new NuGetPackSettings { Properties = properties } ;
             NuGetPack("./src/package.nuspec", nuGetPackSettings);
