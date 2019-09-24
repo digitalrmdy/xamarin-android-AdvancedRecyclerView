@@ -20,7 +20,6 @@ var slackHook = Argument("slackToken", EnvironmentVariable("SLACK_HOOK"));
 var slackChannel = Argument("slackChannel", EnvironmentVariable("SLACK_CHANNEL"));
 var slackMessageSettings = new SlackChatMessageSettings{ IncomingWebHookUrl = slackHook };
 
-var repositoryDirectoryPath = DirectoryPath.FromString(EnvironmentVariable("BITRISE_SOURCE_DIR") ?? ".");
 var gitBranch = EnvironmentVariable("BITRISE_GIT_BRANCH");
 
 var customName = Argument("customName", EnvironmentVariable("CUSTOM_NAME") ?? projectName);
