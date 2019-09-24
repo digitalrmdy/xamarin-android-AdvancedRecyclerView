@@ -1,7 +1,6 @@
 #addin "Cake.ExtendedNuGet"
-#addin "nuget:?package=NuGet.Core"
+#addin "NuGet.Core"
 #addin "Cake.Slack"
-#addin nuget:?package=Cake.Git
 #addin "Cake.FileHelpers"
 
 var projectName = "x3factr.Platform.Droid.AdvancedRecyclerView";
@@ -24,12 +23,7 @@ var slackChannel = Argument("slackChannel", EnvironmentVariable("SLACK_CHANNEL")
 var slackMessageSettings = new SlackChatMessageSettings{ IncomingWebHookUrl = slackHook };
 
 var repositoryDirectoryPath = DirectoryPath.FromString(EnvironmentVariable("BITRISE_SOURCE_DIR") ?? ".");
-var gitBranchInfo = GitBranchCurrent(repositoryDirectoryPath);
-var gitBranch = EnvironmentVariable("BITRISE_GIT_BRANCH") ?? gitBranchInfo.FriendlyName;
-var gitCommitInfo = gitBranchInfo.Tip;
-var gitCommitSha = gitCommitInfo.Sha;
-var gitCommitMessage = gitCommitInfo.Message;
-var gitcommitAuthor = gitCommitInfo.Author.Name;
+var gitBranch = EnvironmentVariable("BITRISE_GIT_BRANCH");
 
 var customName = Argument("customName", EnvironmentVariable("CUSTOM_NAME") ?? projectName);
 
@@ -241,16 +235,6 @@ Task("Default")
                         {
                             Title = "Branch",
                             Value = gitBranch
-                        },
-                        new SlackChatMessageAttachmentField
-                        {
-                            Title = "Author",
-                            Value = gitcommitAuthor
-                        },
-                        new SlackChatMessageAttachmentField
-                        {
-                            Title = "Commit",
-                            Value = $"{gitCommitMessage} ({gitCommitSha})"
                         }
                     }
                 }
@@ -278,16 +262,6 @@ Task("NoPublish")
                         {
                             Title = "Branch",
                             Value = gitBranch
-                        },
-                        new SlackChatMessageAttachmentField
-                        {
-                            Title = "Author",
-                            Value = gitcommitAuthor
-                        },
-                        new SlackChatMessageAttachmentField
-                        {
-                            Title = "Commit",
-                            Value = $"{gitCommitMessage} ({gitCommitSha})"
                         }
                     }
                 }
