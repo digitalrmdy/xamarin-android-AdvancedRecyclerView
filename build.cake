@@ -1,7 +1,4 @@
-#addin "Cake.ExtendedNuGet"
-#addin "NuGet.Core"
 #addin "Cake.Slack"
-#addin "Cake.FileHelpers"
 
 var projectName = "x3factr.Platform.Droid.AdvancedRecyclerView";
 var company = "3factr";
