@@ -1,4 +1,5 @@
-#addin "Cake.Slack"
+#addin "Cake.Slack&version=0.13.0"
+#addin "Cake.FileHelpers&version=3.2.1"
 
 var projectName = "x3factr.Platform.Droid.AdvancedRecyclerView";
 var company = "3factr";
