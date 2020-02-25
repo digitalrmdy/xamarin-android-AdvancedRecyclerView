@@ -12,7 +12,6 @@ var buildId = Int32.Parse(buildIdStr);
 var minimalVerbosity = string.IsNullOrEmpty(Argument("verbose", EnvironmentVariable("BUILD_VERBOSE") ?? string.Empty));
 var solutionPath = MakeAbsolute(File((EnvironmentVariable("SOLUTION_FILE") ?? $"./src/{projectName}.sln")));
 
-var customFeed = Argument("customFeed", EnvironmentVariable("CUSTOM_FEED"));
 var nugetApiKey = Argument("nugetApiKey", EnvironmentVariable("NUGET_API_KEY"));
 var nugetPublishingFeed = Argument("nugetPublishingFeed", EnvironmentVariable("NUGET_PUBLISHING_FEED"));
 
@@ -21,8 +20,6 @@ var slackChannel = Argument("slackChannel", EnvironmentVariable("SLACK_CHANNEL")
 var slackMessageSettings = new SlackChatMessageSettings{ IncomingWebHookUrl = slackHook };
 
 var gitBranch = EnvironmentVariable("BITRISE_GIT_BRANCH");
-
-var customName = Argument("customName", EnvironmentVariable("CUSTOM_NAME") ?? projectName);
 
 var betaSuffix = gitBranch != "master" ? "-beta" : string.Empty;
 
@@ -75,11 +72,6 @@ Task("RestorePackages")
             {
                 "https://api.nuget.org/v3/index.json"
             };
-            if(!string.IsNullOrEmpty(customFeed))
-            {
-                sources.Add(customFeed);
-            }
-            
             Information("Restoring NuGet packages for {0}", solutionPath);
             NuGetRestore(solutionPath, new NuGetRestoreSettings
             {
@@ -116,8 +108,8 @@ Task("SetMetadata")
       var assemblyInfo = ParseAssemblyInfo(File(file));
       CreateAssemblyInfo(file, new AssemblyInfoSettings
       {
-        Title = customName,
-        Product = customName,
+        Title = projectName,
+        Product = projectName,
         Company = company,
         Version = fileVersion,
         FileVersion = fileVersion,
@@ -125,8 +117,6 @@ Task("SetMetadata")
         Copyright = string.Format("Copyright (c) {0}, {1}", DateTime.Now.Year, company)
       });
     }
-
-    ReplaceTextInFiles("**/*.cs", projectName, customName);
   }
   catch(System.Exception exc)
   {
@@ -152,8 +142,8 @@ Task("BuildSolution")
                     conf = conf.SetVerbosity(Verbosity.Minimal);
                 }
 
-                conf = conf.WithProperty("RootNamespace", customName);
-                conf = conf.WithProperty("AssemblyName", customName);
+                conf = conf.WithProperty("RootNamespace", projectName);
+                conf = conf.WithProperty("AssemblyName", projectName);
             });
 
             DeleteFiles("./*.nupkg");
@@ -174,7 +164,7 @@ Task("CreateNuGetPackage")
             var properties = new Dictionary<string,string>();
             properties.Add("VersionSuffix", $"{buildId}{betaSuffix}");
             properties.Add("Configuration", buildConfig);
-            properties.Add("Id", customName);
+            properties.Add("Id", projectName);
 
             var nuGetPackSettings = new NuGetPackSettings { Properties = properties } ;
             NuGetPack("./src/package.nuspec", nuGetPackSettings);
@@ -190,26 +180,19 @@ Task("PushNuGetPackage")
     .IsDependentOn("CreateNuGetPackage")
     .Does(() => 
     {
-        if(string.IsNullOrEmpty(nugetPublishingFeed) || string.IsNullOrEmpty(nugetApiKey))
+        var package = GetFiles("*.pkg").First();
+        
+        if(string.IsNullOrEmpty(nugetApiKey))
         {
-          Warning("Not pushing NuGet package because NuGet info is missing.");
-          return;
+            Error("Nuget API key is not set!");
+            return;
         }
         
-        try
-        {
-            var package = GetFiles("*.nupkg").First();
-
-            NuGetPush(package, new NuGetPushSettings {
-              Source = nugetPublishingFeed,
-              ApiKey = nugetApiKey
-            });
-        }
-        catch (System.Exception exc)
-        {
-            LogExceptionToSlack($"Build {buildId} failed during NuGet publish.", exc);
-            throw;
-        }
+        NuGetPush(package, new NuGetPushSettings {
+          Source = "https://api.nuget.org/v3/index.json",
+          ApiKey = nugetApiKey
+        });
+        
     });
 
 Task("Default")
