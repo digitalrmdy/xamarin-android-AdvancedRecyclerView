@@ -5,11 +5,11 @@
 //------------------------------------------------------------------------------
 using System.Reflection;
 
-[assembly: AssemblyTitle("x3factr.Platform.Droid.AdvancedRecyclerView")]
-[assembly: AssemblyCompany("3factr")]
-[assembly: AssemblyProduct("x3factr.Platform.Droid.AdvancedRecyclerView")]
+[assembly: AssemblyTitle("Rmdy.Android.AdvancedRecyclerView")]
+[assembly: AssemblyCompany("Rmdy")]
+[assembly: AssemblyProduct("Rmdy.Android.AdvancedRecyclerView")]
 [assembly: AssemblyVersion("0.11.1")]
 [assembly: AssemblyFileVersion("0.11.1")]
 [assembly: AssemblyInformationalVersion("0.11.1")]
-[assembly: AssemblyCopyright("Copyright (c) 2018, 3factr")]
+[assembly: AssemblyCopyright("Copyright (c) 2020, Rmdy")]
 
