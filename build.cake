@@ -180,7 +180,7 @@ Task("PushNuGetPackage")
     .IsDependentOn("CreateNuGetPackage")
     .Does(() => 
     {
-        var package = GetFiles("*.pkg").First();
+        var package = GetFiles("*.nupkg").First();
         
         if(string.IsNullOrEmpty(nugetApiKey))
         {
