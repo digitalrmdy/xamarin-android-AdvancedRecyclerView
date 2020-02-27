@@ -3,9 +3,14 @@
     <metadata>
         <id>$id$</id>
         <version>0.12.$versionSuffix$</version>
-        <authors>3factr</authors>
-        <owners>3factr</owners>
+        <authors>RMDY NV, Haruki Hasegawa</authors>
+        <owners>RMDY NV, Haruki Hasegawa</owners>
         <description>Xamarin.Android bindings for AdvancedRecyclerView</description>
+        <projectUrl>https://github.com/digitalrmdy/xamarin-android-AdvancedRecyclerView</projectUrl>
+        <license type="expression">MIT</license>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <developmentDependency>false</developmentDependency>
+        <copyright>RMDY NV, Haruki Hasegawa</copyright>
         <dependencies>
             <group targetFramework="MonoAndroid9.0">
             <dependency id="Xamarin.Android.Support.v7.AppCompat" version="28.0.0.3" />
